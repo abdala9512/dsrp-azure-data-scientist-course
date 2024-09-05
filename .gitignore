@@ -1,4 +1,8 @@
 # Byte-compiled / optimized / DLL files
+
+.amlignore
+.amlignore.amltmp
+.ipynb_aml_checkpoints/*
 __pycache__/
 *.py[cod]
 *$py.class
