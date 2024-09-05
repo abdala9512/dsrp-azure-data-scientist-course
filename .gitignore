@@ -2,7 +2,8 @@
 
 .amlignore
 .amlignore.amltmp
-.ipynb_aml_checkpoints/*
+.gitignore.amltmp
+*/.ipynb_aml_checkpoints/*
 __pycache__/
 *.py[cod]
 *$py.class
