@@ -1,0 +1,13 @@
+pandas>=1.0.0,<2.0.0
+numpy>=1.0.0,<2.0.0
+scikit-learn
+hyperopt
+azure-ai-ml
+azure-identity
+azureml-fsspec
+azureml-core
+azureml-mlflow
+mlflow
+xgboost
+lightgbm
+loguru
