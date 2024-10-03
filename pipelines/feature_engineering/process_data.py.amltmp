@@ -1,18 +1,13 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+import argparse
 from azure.ai.ml import MLClient
 from azure.ai.ml.entities import Data
 from azure.ai.ml.constants import AssetTypes
 from azure.identity import DefaultAzureCredential
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.preprocessing import OneHotEncoder
-from sklearn.feature_extraction import FeatureHasher
 from sklearn.preprocessing import StandardScaler
-
-sns.set_style("whitegrid")
-plt.rcParams["figure.figsize"] = (15,10)
 
 # CREDENCIALES AZURE
 # authenticate
@@ -28,11 +23,16 @@ ml_client = MLClient(
     resource_group_name=RESOURCE_GROUP,
     workspace_name=WS_NAME,
 )# METADATA ASSET
-data_asset = ml_client.data.get("booking-dsrp", version="1")
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--input_data_version", type=int, default=1)
+args = parser.parse_args()
+
+INPUT_DATA_ASSET = "booking-dsrp"
+data_asset = ml_client.data.get(INPUT_DATA_ASSET, version=str(args.input_data_version))
 
 dataframe_reservas_hotel_raw = pd.read_csv(data_asset.path)
-
-
 
 from typing import List, Union
 
@@ -136,16 +136,22 @@ class DataProcessor:
         self.data = self.data.drop(std_vars, axis=1)
         self.data = pd.concat([self.data, scales], axis=1)
 
-    def write(self, version: int):
+    def write(self):
 
+        GOLD_DATA_ASSET = "gold-booking-dsrp"
+        latest_version = int(
+            [
+                asset.latest_version for asset in ml_client.data.list() if asset.name == GOLD_DATA_ASSET
+            ][0]
+        )
         PROCESSED_DATA_PATH = "feature_engineering_data_PROCESSED.csv"
         self.data.to_csv(PROCESSED_DATA_PATH,index=False)
         processed_dataset = Data(
             path=PROCESSED_DATA_PATH,
             type=AssetTypes.URI_FILE,
             description="Tabla Final Feature Engineering",
-            name="gold-booking-dsrp",
-            version=str(version)
+            name=GOLD_DATA_ASSET,
+            version=str(latest_version + 1)
         )
         self.client.data.create_or_update(processed_dataset)
 
@@ -153,5 +159,5 @@ class DataProcessor:
 # EJECUCION PIPELINE
 processor = DataProcessor(client=ml_client, data=dataframe_reservas_hotel_raw)
 processor.process()
-processor.write(version=4)
+processor.write()
 

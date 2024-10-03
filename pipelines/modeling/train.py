@@ -1,7 +1,7 @@
 import pandas as pd
 import mlflow
 
-
+import argparse
 from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential
 
@@ -30,7 +30,24 @@ from hyperopt import fmin, hp, tpe, Trials
 from loguru import logger
 from typing import Any
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--algorithm", type=str, default="xgboost")
+parser.add_argument("--input_table_version", type=int, default=1)
+args = parser.parse_args()
 
+
+algorithm_registry = {
+    "xgboost": {
+        "model": XGBClassifier,
+        "search_space": {
+        "max_depth": hp.randint("max_depth", 1, 10),
+    }
+    } ,
+    "lightm": LGBMClassifier ,
+    "random_forest": RandomForestClassifier ,
+    "knn": KNeighborsClassifier,
+    "gbm": GradientBoostingClassifier,
+}
 
 # CREDENCIALES AZURE
 credential = DefaultAzureCredential()
@@ -46,7 +63,7 @@ ml_client = MLClient(
     workspace_name=WS_NAME,
 )
 # METADATA ASSET
-data_asset = ml_client.data.get("gold-booking-dsrp", version="2")
+data_asset = ml_client.data.get("gold-booking-dsrp", version=str(args.input_table_version))
 
 modeling_dataframe = pd.read_csv(data_asset.path)
 TARGET_COLUMN = "is_canceled"
@@ -158,6 +175,7 @@ class MachineLearningProcessor:
         """
         Entrenamiento del model de ML
         """
+
         mlflow.autolog()
         with mlflow.start_run(run_name=self.model_name):
 
@@ -185,17 +203,15 @@ class MachineLearningProcessor:
                 classification_report(y_test, predictions)
             )
 
-xgboost_ml_processor = MachineLearningProcessor(
+_ml_processor = MachineLearningProcessor(
     data=modeling_dataframe,
-    algorithm=XGBClassifier,
-    model_name="JOB - XGBoost Classifier with MachineLearningProcessor",
+    algorithm=algorithm_registry[args.algorithm]["model"],
+    model_name=f"JOB - {args.algorithm} Classifier with MachineLearningProcessor",
     target=TARGET_COLUMN,
 )
-best_params = xgboost_ml_processor.optimize_tpe(
-    search_space={
-        "max_depth": hp.randint("max_depth", 1, 10),
-    }
+best_params = _ml_processor.optimize_tpe(
+    search_space=algorithm_registry[args.algorithm]["search_space"]
 )
-xgboost_ml_processor.train(
+_ml_processor.train(
     params=best_params
 )
