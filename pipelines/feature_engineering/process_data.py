@@ -145,6 +145,7 @@ class DataProcessor:
             ][0]
         )
         PROCESSED_DATA_PATH = "feature_engineering_data_PROCESSED.csv"
+        self.data["id"] = self.data.index + 1
         self.data.to_csv(PROCESSED_DATA_PATH,index=False)
         processed_dataset = Data(
             path=PROCESSED_DATA_PATH,
