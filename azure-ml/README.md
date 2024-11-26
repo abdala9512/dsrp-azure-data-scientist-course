@@ -38,5 +38,23 @@ Proceso de ingesta de datos ejecutado en este notebook: https://github.com/abdal
   - Jobs: https://github.com/abdala9512/dsrp-azure-data-scientist-course/blob/main/azure-ml/notebooks/JOBS.ipynb
   - Código fuente Machine Learning: https://github.com/abdala9512/dsrp-azure-data-scientist-course/blob/main/azure-ml/pipelines/modeling/train.py
 ### Despliegue
+
+Notebook Deployment: https://github.com/abdala9512/dsrp-azure-data-scientist-course/blob/main/azure-ml/notebooks/predicciones.ipynb
+
+#### Batch Deployment
+![image](https://github.com/user-attachments/assets/af392082-c481-4907-b5f4-219273ab06e7)
+
+#### Online Deployment
+![image](https://github.com/user-attachments/assets/0db1e1bc-c711-4f78-a0dc-64a7919c6a1d)
+
+
 ### Monitoreo
+![image](https://github.com/user-attachments/assets/6b70785a-8512-454e-a9b8-33b4280889d5)
+
+Notebook Monitoreo:https://github.com/abdala9512/dsrp-azure-data-scientist-course/blob/main/azure-ml/notebooks/monitoreo.ipynb
+Monitores implementados:
+- Model Performance
+- DataDrift
+- Sistema de Alertas por correo
+Documentación Azure ML - Monitoreo: https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring?view=azureml-api-2
 
