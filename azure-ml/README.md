@@ -17,8 +17,12 @@ Tomado de Datasets de Kaggle: https://www.kaggle.com/code/touba7/hotel-booking
 1. Creación Azure Machine Learning Workspace (Clase 1)
 ![image](https://github.com/user-attachments/assets/60d0f6b8-8b51-4338-852e-65def56c3df6)
 2. Conexión con repositorio remoto de Github: https://github.com/abdala9512/dsrp-azure-data-scientist-course/blob/main/azure-ml/common/config_gh_ssh.sh
-  - Configuración llabes SSH con github: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+  - Configuración llaves SSH con github: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 3. Creación Kernels como ambientes de trabajo en AML: https://github.com/abdala9512/dsrp-azure-data-scientist-course/blob/main/azure-ml/common/config_kernel.sh
+
+#### RECOMENDADO - Creación ambientes en AML
+
+Se recomienda crear ambiente de Azure Machine Learning para distintas cargas de trabajo, documentación sobre ambientes acá: https://learn.microsoft.com/es-es/azure/machine-learning/concept-environments?view=azureml-api-2
 
 ### Extracción de datos
 
@@ -41,12 +45,11 @@ Proceso de ingesta de datos ejecutado en este notebook: https://github.com/abdal
 
 Notebook Deployment: https://github.com/abdala9512/dsrp-azure-data-scientist-course/blob/main/azure-ml/notebooks/predicciones.ipynb
 
-#### Batch Deployment
+#### Solución 1: Batch Deployment
 ![image](https://github.com/user-attachments/assets/af392082-c481-4907-b5f4-219273ab06e7)
 
-#### Online Deployment
+#### Solución 2: Online Deployment
 ![image](https://github.com/user-attachments/assets/0db1e1bc-c711-4f78-a0dc-64a7919c6a1d)
-
 
 ### Monitoreo
 ![image](https://github.com/user-attachments/assets/6b70785a-8512-454e-a9b8-33b4280889d5)
